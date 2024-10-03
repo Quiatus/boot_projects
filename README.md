@@ -1,1 +1,1 @@
-git commit -m "update readme with a description"
+BookBot is my first project!
