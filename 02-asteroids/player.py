@@ -9,6 +9,9 @@ class Player(CircleShape):
     super().__init__(x, y, PLAYER_RADIUS)
     self.rotation = 0
     self.rpm = 0
+    self.score = 0
+    self.life = PLAYER_START_LIFE
+    self.shield = PLAYER_START_SHIELD
 
   def triangle(self):
     forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -19,7 +22,9 @@ class Player(CircleShape):
     return [a, b, c]
 
   def draw(self, screen):
-    pygame.draw.polygon(screen, (255,255,255), self.triangle(), 2)
+    pygame.draw.polygon(screen, (200,200,200), self.triangle(), 0)
+    if self.shield:
+      pygame.draw.circle(screen, (0,191,255), self.position, self.radius + 10, 2)
 
   def rotate(self, dt):
     self.rotation += PLAYER_TURN_SPEED * dt
@@ -54,5 +59,23 @@ class Player(CircleShape):
     self.rpm = PLAYER_SHOOT_COOLDOWN
     shot = Shot(self.position.x, self.position.y)
     shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+
+  def set_score(self):
+    self.score += 1
+
+  def get_score(self):
+     return self.score
+  
+  def remove_life(self):
+    self.life -= 25
+
+  def get_life(self):
+     return self.life
+  
+  def remove_shield(self):
+    self.shield -= 25
+
+  def get_shield(self):
+     return self.shield
 
        
