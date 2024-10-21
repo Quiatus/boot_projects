@@ -11,7 +11,7 @@ def main():
 
   pygame.init()
   pygame.font.init()
-  game_font = pygame.font.SysFont("DejaVuSansMono", 32)
+  game_font = pygame.font.SysFont("Sans-Serif", 32)
 
   print(pygame.font.get_default_font())
 
