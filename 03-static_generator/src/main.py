@@ -1,7 +1,7 @@
 from textnode import TextNode
 
 def main():
-  node = TextNode('Node', 'bold', 'https://quiatus.com/')
+  node = TextNode('Node', 'normal', 'https://quiatus.com/')
   print(repr(node))
 
 main()
