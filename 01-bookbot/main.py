@@ -1,52 +1,41 @@
-def open_book(name):
-  with open(f'books/{name}.txt') as f:
-      text = f.read()
-  return text
+import sys
+from stats import (
+    get_num_words,
+    chars_dict_to_sorted_list,
+    get_chars_dict,
+)
 
-def word_count(text):
-  count = text.split()
-  return len(count)
-
-def char_count(text):
-  chars = {}
-  for char in text:
-    lowered = char.lower()
-    if lowered not in chars:
-      chars[lowered] = 1
-    else:
-      chars[lowered] += 1
-
-  return chars
-
-def convert_and_sort(dict):
-  char_lst = []
-
-  def sort_key(inp):
-    return inp['count']
-
-  for item in dict:
-    if item.isalpha():
-      char_lst.append({'char': item, 'count': dict[item]})
-
-  char_lst.sort(reverse=True, key=sort_key)
-
-  return char_lst
-
-def print_res(book_title, count, sorted):
-  print(f'--- Begin report of books/{book_title}.txt ---')
-  print(f'{count} words found in the document\n')
-
-  for item in sorted:
-    print(f"The '{item['char']}' character was found {item['count']} times")
-
-  print('--- End report ---')
 
 def main():
-  book_title = 'frankenstein'
-  text = open_book(book_title)
-  count = word_count(text)
-  chars = char_count(text)
-  sorted = convert_and_sort(chars)
-  print_res(book_title, count, sorted)
+    if len(sys.argv) < 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    book_path = sys.argv[1]
+
+    text = get_book_text(book_path)
+    num_words = get_num_words(text)
+    chars_dict = get_chars_dict(text)
+    chars_sorted_list = chars_dict_to_sorted_list(chars_dict)
+    print_report(book_path, num_words, chars_sorted_list)
+
+
+def get_book_text(path):
+    with open(path) as f:
+        return f.read()
+
+
+def print_report(book_path, num_words, chars_sorted_list):
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {book_path}...")
+    print("----------- Word Count ----------")
+    print(f"Found {num_words} total words")
+    print("--------- Character Count -------")
+    for item in chars_sorted_list:
+        if not item["char"].isalpha():
+            continue
+        print(f"{item['char']}: {item['num']}")
+
+    print("============= END ===============")
+
 
 main()
